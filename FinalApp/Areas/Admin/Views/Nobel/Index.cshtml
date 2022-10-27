@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Index</h2>
+
+
+
+
+
+@section MyScripts{
+    <script>
+
+        //Nobel Api --- GetAllPrizes
+
+        var settings = {
+            "url": "http://api.nobelprize.org/v1/prize.json?",
+            "method": "GET",
+            "timeout": 0,
+        };
+
+        $.ajax(settings).done(function (prizes) {
+            console.log(prizes);
+
+            //O stoxos mou einai na apoktiso ola ta ids     [1011,10012,10012,101556]
+
+            for (let id of ids) {
+
+                var settings = {
+                    "url": "http://api.nobelprize.org/v1/laureate.json?id=" + id,
+                    "method": "GET",
+                    "timeout": 0,
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+
+                    //mapping
+
+                    {name:"Einstein","USA"}
+                });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            }
+
+
+        });
+
+
+        //map (laureate  id,name )
+        //Nobel Api --- Gia kathe laurete id pou exo pare tin country
+
+       
+        
+
+
+
+
+
+        let persons = [
+            {
+                "name: "Fanis",
+                country: "France"
+            },
+            {
+                name: "Giorgos",
+                country: "France"
+            }
+        ]
+
+        var settings = {
+            "url": "https://localhost:44372/admin/PersonsApi/CreatePersons",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify(persons),
+        };
+
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+        });
+    </script>
+}

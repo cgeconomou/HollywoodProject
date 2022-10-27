@@ -1,0 +1,58 @@
+﻿<header class="header header--hidden">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="header__content">
+                    <button class="header__menu" type="button">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+
+                    <a href="~/Customer/Movie/Index" class="header__logo">
+                        <img src="~/Assets/main/img/logo.svg" alt="Movies & TV Shows, Online cinema HTML Template">
+                    </a>
+
+                    <ul class="header__nav">
+                        <li class="header__nav-item">
+                            <a class="header__nav-link" href="~/Customer/Movie/Index" role="button"  aria-haspopup="true" aria-expanded="false">Movies <svg width="4" height="4" viewBox="0 0 4 4" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.93893 3.30334C1.08141 3.30334 0.384766 2.60669 0.384766 1.75047C0.384766 0.894254 1.08141 0.196308 1.93893 0.196308C2.79644 0.196308 3.49309 0.894254 3.49309 1.75047C3.49309 2.60669 2.79644 3.30334 1.93893 3.30334Z" /></svg></a>
+
+                        </li>
+                        <li class="header__nav-item">
+                            <a class="header__nav-link" href="~/Customer/Actor/Index" role="button"  aria-haspopup="true" aria-expanded="false">Actors <svg width="4" height="4" viewBox="0 0 4 4" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.93893 3.30334C1.08141 3.30334 0.384766 2.60669 0.384766 1.75047C0.384766 0.894254 1.08141 0.196308 1.93893 0.196308C2.79644 0.196308 3.49309 0.894254 3.49309 1.75047C3.49309 2.60669 2.79644 3.30334 1.93893 3.30334Z" /></svg></a>
+
+                        </li>
+                        <li class="header__nav-item">
+                            <a class="header__nav-link" href="~/Customer/Director/Index" role="button"   aria-haspopup="true" aria-expanded="false">Directors <svg width="4" height="4" viewBox="0 0 4 4" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.93893 3.30334C1.08141 3.30334 0.384766 2.60669 0.384766 1.75047C0.384766 0.894254 1.08141 0.196308 1.93893 0.196308C2.79644 0.196308 3.49309 0.894254 3.49309 1.75047C3.49309 2.60669 2.79644 3.30334 1.93893 3.30334Z" /></svg></a>
+
+                        </li>
+
+                        <li class="header__nav-item">
+                            <a class="header__nav-link" href="~/Admin/Movie/Index" role="button"   aria-haspopup="true" aria-expanded="false">Go to Admin <svg width="4" height="4" viewBox="0 0 4 4" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.93893 3.30334C1.08141 3.30334 0.384766 2.60669 0.384766 1.75047C0.384766 0.894254 1.08141 0.196308 1.93893 0.196308C2.79644 0.196308 3.49309 0.894254 3.49309 1.75047C3.49309 2.60669 2.79644 3.30334 1.93893 3.30334Z" /></svg></a>
+
+                        </li>
+
+                        <li class="header__nav-item">
+                            <a class="header__nav-link" href="/Index" role="button"   aria-haspopup="true" aria-expanded="false"><span>Cart</span>  <span style="margin-left:5px;background-color:gray;width:20px;height:20px;text-align:center;border-radius:50px;" id="CartNumber"></span>     <svg width="4" height="4" viewBox="0 0 4 4" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.93893 3.30334C1.08141 3.30334 0.384766 2.60669 0.384766 1.75047C0.384766 0.894254 1.08141 0.196308 1.93893 0.196308C2.79644 0.196308 3.49309 0.894254 3.49309 1.75047C3.49309 2.60669 2.79644 3.30334 1.93893 3.30334Z" /></svg></a>
+
+                        </li>
+
+
+                      
+                    </ul>
+
+                    <div class="header__actions">
+                        <form action="#" class="header__form">
+                        </form>
+
+                        <button class="header__search" type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z" /></svg>
+                        </button>
+                        @Html.Partial("~/Areas/Customer/Views/Shared/Components/_LoginPartial.cshtml")
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

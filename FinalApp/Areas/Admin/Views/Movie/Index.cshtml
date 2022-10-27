@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<table class="table" id="mytable">
+    <thead>
+        <tr>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+
+@section MyScripts{
+    <script>
+        $(document).ready(function () {
+            $('#mytable').DataTable(
+                {
+                    ajax: {
+                        url: "/Admin/MovieApi/GetMovies",
+                        type: "get",
+                        datatype: "json"
+                    },
+
+                    columns: [
+                        {
+                            data: "MovieId", name: "MovieId", title: "Id"
+                        },
+                        {
+                            data: "PhotoUrl", name: "PhotoUrl", title: "Photo", render: function (url) {
+                                return `<img src="${url}" style="height:60px;"/>`
+                            }
+                        },
+                        {
+                            data: "Title", name: "Title", title: "Title"
+                        },
+                        {
+                            data: "ProductionYear", name: "ProductionYear", title: "ProductionYear", render: function (date) {
+                                
+                                return `${date.day}/${date.month}/${date.year}`
+                            }
+                        }
+                       
+
+                    ],
+
+
+
+
+                    dom: "lBfrtip",
+                    searching: true,
+                    language: {
+                        processing: "Loading....",
+                        emptyTable: "<button class='btn btn-danger'>No Data</button>",
+                        zeroRecords: "<button class='btn btn-danger'>No Data</button>",
+                        infoFiltered: " Total number of employees: _MAX_",
+                        paginate: { first: "Proto", last: "Teleytaia", next: "Epomeni", previus: "Proigoumeni" }
+                    },
+
+                    stateSave: true,
+                    //stateSaveCallback: function (settings, data) {
+                    //    localStorage.setItem('KostasKey' + settings.sInstance, JSON.stringify(data))
+                    //
+                    //},
+                    //stateLoadCallback: function (settings, data) {
+                    //    /*  localStorage.setItem('KostasKey' + settings.sInstance)    */
+
+                    //}
+
+                    lengthChange: true,
+                    lengthMenu: [[2, 5, 10, 20, 40, -1], [2, 5, 10, 20, 40, "All"]],
+
+
+                    buttons: [
+                        'colvis',
+                        'copy',
+                        'excel',
+                        'pdf',
+                        {
+                            extend: 'print',
+                            text: 'Print kati',
+                            exportOptions: {
+                                modifier: {
+                                    page: 'current'
+                                }
+                            }
+                        }
+                    ]
+                }
+
+            );
+        });
+    </script>
+}

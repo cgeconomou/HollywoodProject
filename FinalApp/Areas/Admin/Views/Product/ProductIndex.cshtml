@@ -1,0 +1,399 @@
+﻿
+@{
+    ViewBag.Title = "ProductIndex";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div>
+    <button id="loadBtn" class="btn btn-info">Load Data...</button>
+    <button id="createBtn" data-toggle="modal" data-target="#CreateModal" class="btn btn-primary">Create Product</button>
+
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Shops</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @*<tr>
+                <td class="productId">1</td>
+                <td class="productName" contenteditable="false">Samsung</td>
+                <td class="productPrice"><input type="number" value="300" disabled /></td>
+                <td class="productQuantity"><input type="number" value="3" disabled /></td>
+                <td class="productTotal">900</td>
+                <td>
+                    <button class="productEdit   btn btn-success">Edit</button>
+                    <button class="productDelete btn btn-danger">Delete</button>
+                </td>
+            </tr>*@
+    </tbody>
+</table>
+
+
+<!--CreateModal -->
+<div class="modal fade" id="CreateModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create Product</h4>
+            </div>
+            <div class="modal-body">
+
+                <form id="forma">
+                    <div class="form-group">
+                        <label for="productName">Product Name</label>
+                        <input id="productName" class="form-control" type="text" value="" placeholder="Give product Name" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Product Price</label>
+                        <input id="productPrice" class="form-control" type="number" value="" placeholder="Give product Price" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="productQuantity">Product Quantity</label>
+                        <input id="productQuantity" class="form-control" type="number" value="" placeholder="Give product Quantity" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="productShop">Product Shop</label>
+                        <select class="form-control" id="productShop">
+                            
+                        </select>
+                    </div>
+
+
+                    <input type="submit" id="createFormBtn" class="btn btn-primary" value="Create Product" />
+                    <input id="clearFormBtn" class="btn btn-info" value="Reset Form" />
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--EditModal -->
+<div class="modal fade" id="EditModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Product</h4>
+            </div>
+            <div class="modal-body">
+
+                <form id="Editforma">
+                    <input id="EditProductId"  type="hidden" value="" />
+                    <div class="form-group">
+                        <label for="EditproductName">Product Name</label>
+                        <input id="EditproductName" class="form-control" type="text" value="" placeholder="Give product Name" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="EditproductPrice">Product Price</label>
+                        <input id="EditproductPrice" class="form-control" type="number" value="" placeholder="Give product Price" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="EditproductQuantity">Product Quantity</label>
+                        <input id="EditproductQuantity" class="form-control" type="number" value="" placeholder="Give product Quantity" required />
+                    </div>
+                    <input type="submit" id="EditFormBtn" class="btn btn-primary" value="Edit Product" />
+                    <input id="EditclearFormBtn" class="btn btn-info" value="Reset Form" />
+                </form>
+
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section MyScripts{
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script>
+
+        $("#loadBtn").on("click", onLoadDataHandler);
+        $("#forma").on("submit", onCreateProductHandler);
+        $("#clearFormBtn").on("click", ClearForm);
+        $("#Editforma").on("submit", onEditFormProductHandler);
+        $("#createBtn").on("click", onCreateBtn);
+
+        //Handlers
+
+        function onCreateBtn() {
+            $("#productShop").empty();
+            $("#productShop").append(`<option></option>`);
+            var settings = {
+                "url": "https://localhost:44372/admin/productApi/GetAllShops",
+                "method": "GET",
+                "timeout": 0,
+            };
+
+            $.ajax(settings).done(function (shops) {
+                console.log(shops);
+
+                shops.forEach(function (shop) {
+                   
+                    let templata = `
+                                        <option value=${shop.Id}>${shop.Title}</option>
+                                    `
+                    let ele = $(templata);
+                    $("#productShop").append(ele);
+                })
+            });
+
+
+        }
+
+
+
+
+        
+
+        function onEditFormProductHandler(event) {
+            event.preventDefault();
+            $("#Editforma").off("submit", onEditFormProductHandler);
+            $("#Editforma").find("#EditFormBtn").attr('disabled', true);
+
+
+            let name = $("#EditproductName").val();
+            let price = $("#EditproductPrice").val();
+            let quantity = $("#EditproductQuantity").val();
+            let id = $("#EditProductId").val();
+
+            let product = { name, price, quantity };
+
+            console.log(product);
+
+            let requestObject = JSON.stringify(product);
+
+            var settings = {
+                "url": "https://localhost:44372/admin/productApi/UpdateProduct?id="+id,
+                "method": "PUT",
+                "timeout": 0,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "data": requestObject
+            };
+
+            $.ajax(settings).done(function (response) {
+                $("#Editforma").on("submit", onEditFormProductHandler);
+                $('#EditModal').modal('hide');
+                onLoadDataHandler();
+                $("#Editforma").find("#EditFormBtn").attr('disabled', false);
+
+            }).fail(function () {
+                ShowAlertMessage("alert-danger", "Fail!", "Unable to Edit product... Server Problem...");
+                $("#Editforma").on("submit", onEditFormProductHandler);
+                $("#Editforma").find("#EditFormBtn").attr('disabled', false);
+            });
+
+
+
+
+        }
+
+
+
+
+
+
+
+        function onEditProductHandler(e, id) {
+
+            var settings = {
+                "url": "https://localhost:44372/admin/productApi/GetProductById?id=" + id,
+                "method": "GET",
+                "timeout": 0,
+            };
+
+            $.ajax(settings).done(function (product) {
+                $("#EditproductName").val(product.Name)
+                $("#EditproductPrice").val(product.Price)
+                $("#EditproductQuantity").val(product.Quantity)
+                $("#EditProductId").val(product.Id)
+
+
+                $('#EditModal').modal('show');
+
+            }).fail(function () {
+                ShowAlertMessage("alert-danger", "Fail!", "Unable to Get product details... Server Problem...");
+
+            });
+
+
+
+            
+        }
+
+
+
+
+
+
+
+        function onCreateProductHandler(event) {
+            event.preventDefault();
+            $("#forma").off("submit", onCreateProductHandler);
+            $("#forma").find("#createFormBtn").attr('disabled', true);
+
+
+            let name = $("#productName").val();
+            let price = $("#productPrice").val();
+            let quantity = $("#productQuantity").val();
+            let shopId = $("#productShop").val();
+
+            let product = { name, price, quantity, shopId };
+
+            console.log(product);
+
+            let requestObject = JSON.stringify(product);
+
+            let settings = {
+                url: "https://localhost:44372/admin/productApi/CreateProduct",
+                method: "POST",
+                timeout: 0,
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                data: requestObject
+            };
+
+            $.ajax(settings).done(function (response) {
+                $("#forma").on("submit", onCreateProductHandler);
+                $('#CreateModal').modal('hide');
+                onLoadDataHandler();
+                ClearForm();
+                $("#forma").find("#createFormBtn").attr('disabled', false);
+            }).fail(function () {
+                ShowAlertMessage("alert-danger", "Fail!", "Unable to Create product... Server Problem...");
+                $("#forma").on("submit", onCreateProductHandler);
+                $("#forma").find("#createFormBtn").attr('disabled', false);
+            });
+        }
+
+
+
+        function onLoadDataHandler() {
+
+            LoadSpinner();
+            var settings = {
+                "url": "https://localhost:44372/admin/productApi/GetAllProducts",
+                "method": "GET",
+                "timeout": 0,
+            };
+
+            $.ajax(settings).done(function (products) {
+                $("table > tbody").empty();
+                products.forEach(CreateRow)
+            }).fail(function () {
+
+                ShowAlertMessage("alert-danger", "Fail!", "Unable to load products... Server Problem...");
+
+            });
+        }
+
+        function onDeleteProductHandler(e, id) {
+
+            let obj = { id };
+            var settings = {
+                "url": "https://localhost:44372/admin/productApi/DeleteProduct",
+                "method": "DELETE",
+                "timeout": 0,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "data": JSON.stringify(obj),
+            };
+
+            $.ajax(settings).done(function (product) {
+                // e.parentElement.parentElement.remove()    //JS
+                $(e).parent().parent().remove()             //JQ
+
+                ShowAlertMessage("alert-success", "Success!", `Successfully deleted product with name: ${product.Name}`);
+
+            }).fail(function () {
+
+                ShowAlertMessage("alert-danger", "Fail!", "Unable to delete this product... Server Problem...");
+
+                //$("body").append("Unable to delete this product... Server Problem...");
+            });
+        }
+
+
+        function CreateRow(pro) {
+
+            let template = `
+                                                       <tr>
+                                                               <td class="productId">${pro.Id}</td>
+                                                               <td class="productName" contenteditable="false">${pro.Name}</td>
+                                                               <td class="productPrice"><input type="number" value=${pro.Price} disabled /></td>
+                                                               <td class="productQuantity"><input type="number" value=${pro.Quantity} disabled /></td>
+                                                                <td>
+                                                                      ${pro.Shop.Title}
+                                                                <td>
+                                                               <td class="productTotal">${CalculateTotal(pro.Price, pro.Quantity)}</td>
+                                                               <td>
+                                                                   <button  onclick="onEditProductHandler(this,${pro.Id})"        class="productEdit   btn btn-success">Edit</button>
+                                                                   <button  onclick="onDeleteProductHandler(this,${pro.Id})"      class="productDelete btn btn-danger">Delete</button>
+                                                               </td>
+                                                           </tr>
+                                                    `
+            let ele = $(template);
+
+            $("table > tbody").append(ele);
+        }
+
+        function CalculateTotal(price, quantity) {
+            return price * quantity;
+        }
+
+        function LoadSpinner() {
+            let template = `
+                                                    <div class="spinner-border">Loading........</div>
+                                                `
+            $("table > tbody").html(template)
+        }
+
+        function ShowAlertMessage(status, title, message) {
+            let templeta = `
+                                                        <div class="alert ${status} alert-dismissible">
+                                                          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                          <strong>${title}</strong> ${message}
+                                                        </div>
+                                                    `
+            $("body").append(templeta);
+        }
+
+        function ClearForm() {
+            $("#productName").val("");
+            $("#productPrice").val("");
+            $("#productQuantity").val("");
+        }
+
+
+
+
+
+
+    </script>
+}

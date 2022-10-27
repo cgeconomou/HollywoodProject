@@ -1,0 +1,47 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    @Html.Partial("~/Areas/Customer/Views/Shared/Components/_MetaHeader.cshtml")
+
+    @RenderSection("MyStyles", false)
+
+
+</head>
+
+<body>
+    <!-- header  -->
+    @Html.Partial("~/Areas/Customer/Views/Shared/Components/_Header.cshtml")
+    <!-- end header -->
+    <!-- BODY  -->
+    @RenderBody()
+    <!-- END BODY  -->
+    <!-- footer -->
+    @Html.Partial("~/Areas/Customer/Views/Shared/Components/_Footer.cshtml")
+    <!-- end footer -->
+    <!-- JS -->
+    @Html.Partial("~/Areas/Customer/Views/Shared/Components/_JsLibraries.cshtml")
+    <!-- End JS -->
+
+
+
+    @RenderSection("MyScripts", false)
+
+
+    <script>
+        
+        let actors = JSON.parse(localStorage.getItem("actorsKey"));
+        if (actors) {
+            let count = actors.length;
+            $("#CartNumber").text(count);
+        } else {
+            $("#CartNumber").text(0);
+        }
+       
+
+
+    </script>
+
+
+</body>
+</html>
